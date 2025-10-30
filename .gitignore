@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment and credentials
+.env
+
+# Personal golf data (keep private)
+ghin-data.json
+ghin-handicap-history.json
+
+# Build output (gh-pages handles deployment)
+dist/
+
+# Editor files
+.DS_Store
+.vscode/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+*.log

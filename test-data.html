@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Data Loading</title>
+</head>
+<body>
+    <h1>Testing Data Loading</h1>
+    <div id="output"></div>
+    <script type="module">
+        import { getGolfData } from './dist/data/index.js';
+
+        const output = document.getElementById('output');
+        output.innerHTML = '<p>Loading data...</p>';
+
+        try {
+            const data = await getGolfData();
+            output.innerHTML = '<p style="color: green;">✓ Data loaded successfully!</p><pre>' + JSON.stringify(data.player, null, 2) + '</pre>';
+        } catch (error) {
+            output.innerHTML = '<p style="color: red;">✗ Error loading data:</p><pre>' + error.toString() + '\n\n' + error.stack + '</pre>';
+        }
+    </script>
+</body>
+</html>

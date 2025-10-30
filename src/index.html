@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Statistics Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">⛳ Golf Statistics</h1>
+            <p class="subtitle">Performance Analytics & Insights</p>
+        </header>
+
+        <!-- Player Info Card -->
+        <section class="player-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Player</span>
+                    <span class="info-value" id="player-name">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">GHIN</span>
+                    <span class="info-value" id="player-ghin">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Handicap Index</span>
+                    <span class="info-value" id="player-handicap">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Home Club</span>
+                    <span class="info-value" id="player-club">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" data-view="dashboard">Dashboard</button>
+            <button class="tab" data-view="goals">Goals</button>
+            <button class="tab" data-view="scoring">Scoring</button>
+            <button class="tab" data-view="performance">Performance</button>
+            <button class="tab" data-view="shots">Shots</button>
+            <button class="tab" data-view="courses">Courses</button>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-view" class="view active">
+            <div class="cards-grid">
+                <!-- Scoring Summary Card -->
+                <div class="stat-card">
+                    <h2 class="card-title">Scoring Summary</h2>
+                    <div class="stat-row">
+                        <span class="stat-label">Average to Par</span>
+                        <span class="stat-value" id="avg-to-par">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Best 9-Hole</span>
+                        <span class="stat-value positive" id="best-9-hole">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Best 18-Hole</span>
+                        <span class="stat-value positive" id="best-18-hole">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Total Rounds</span>
+                        <span class="stat-value" id="total-rounds">-</span>
+                    </div>
+                </div>
+
+                <!-- Shot Statistics Card -->
+                <div class="stat-card">
+                    <h2 class="card-title">Shot Statistics</h2>
+                    <div class="stat-row">
+                        <span class="stat-label">Fairways Hit</span>
+                        <span class="stat-value" id="fairways-hit">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Greens in Regulation</span>
+                        <span class="stat-value" id="gir">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Avg Putts/Round</span>
+                        <span class="stat-value" id="avg-putts">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Scrambling</span>
+                        <span class="stat-value" id="scrambling">-</span>
+                    </div>
+                </div>
+
+                <!-- Scoring Distribution Card -->
+                <div class="stat-card scoring-distribution-card">
+                    <h2 class="card-title">Scoring Distribution</h2>
+                    <div id="scoring-distribution-chart" class="chart-container">
+                        <p class="loading">Loading chart...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Form Card -->
+            <div class="stat-card recent-form-card">
+                <h2 class="card-title">Recent Form</h2>
+                <p class="card-subtitle">Performance trends vs overall average</p>
+                <div id="recent-form-container">
+                    <div class="form-indicator" id="form-last5">
+                        <div class="form-label">Last 5 Rounds</div>
+                        <div class="form-value">-</div>
+                        <div class="form-trend">-</div>
+                    </div>
+                    <div class="form-indicator" id="form-last10">
+                        <div class="form-label">Last 10 Rounds</div>
+                        <div class="form-value">-</div>
+                        <div class="form-trend">-</div>
+                    </div>
+                    <div class="form-indicator" id="form-last20">
+                        <div class="form-label">Last 20 Rounds</div>
+                        <div class="form-value">-</div>
+                        <div class="form-trend">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Rounds Table -->
+            <div class="table-container">
+                <h2 class="section-title">Recent Rounds</h2>
+                <table class="rounds-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Course</th>
+                            <th>Tees</th>
+                            <th>Score</th>
+                            <th>To Par</th>
+                            <th>Differential</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-rounds-body">
+                        <tr><td colspan="6" class="loading">Loading rounds...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section id="goals-view" class="view">
+            <h2 class="section-title">Goal Tracking</h2>
+
+            <!-- Burndown Chart -->
+            <div class="stat-card">
+                <h3 class="card-title">Handicap Progress Burndown</h3>
+                <p class="card-subtitle">Your actual progress vs ideal trajectory to reach your goals</p>
+                <div id="goals-burndown-container">
+                    <p class="loading">Loading burndown chart...</p>
+                </div>
+            </div>
+
+            <!-- Goal Progress Cards -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Goal Status</h3>
+                <div id="goals-progress-container">
+                    <p class="loading">Loading goals...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scoring Section -->
+        <section id="scoring-view" class="view">
+            <h2 class="section-title">Scoring Analysis</h2>
+
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <h3 class="card-title">Handicap Progress</h3>
+                    <p class="card-subtitle">Calculated trend using best 8 of 20 formula | Your actual GHIN handicap is <span id="actual-handicap-display">-</span></p>
+                    <div id="handicap-chart" class="chart-container"></div>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="card-title">Score History</h3>
+                    <div id="score-history-chart" class="chart-container"></div>
+                </div>
+            </div>
+
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Scoring Activity Heatmap</h3>
+                <p class="card-subtitle">Last 12 months - Green = good rounds, Orange = above handicap</p>
+                <div id="scoring-heatmap-container">
+                    <p class="loading">Loading heatmap...</p>
+                </div>
+            </div>
+
+            <!-- Performance by Hole Type -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Performance by Hole Type</h3>
+                <p class="card-subtitle">Average performance on par 3s, 4s, and 5s</p>
+                <div id="hole-type-container" class="hole-type-grid">
+                    <p class="loading">Loading hole type data...</p>
+                </div>
+            </div>
+
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">All Rounds</h3>
+                <p class="card-subtitle">Click any round to see hole-by-hole momentum</p>
+                <table class="rounds-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Course</th>
+                            <th>Rating/Slope</th>
+                            <th>Score</th>
+                            <th>To Par</th>
+                            <th>Differential</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-rounds-body">
+                        <tr><td colspan="6" class="loading">Loading rounds...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Performance Section -->
+        <section id="performance-view" class="view">
+            <h2 class="section-title">Performance Analysis</h2>
+
+            <!-- Personal Records Card -->
+            <div class="stat-card">
+                <h2 class="card-title">Personal Records</h2>
+                <p class="card-subtitle">Your best performances</p>
+                <div id="personal-records-container">
+                    <p class="loading">Loading records...</p>
+                </div>
+            </div>
+
+            <!-- Momentum Card -->
+            <div class="stat-card momentum-card">
+                <h2 class="card-title">Momentum Tracking</h2>
+                <p class="card-subtitle">Performance patterns throughout your rounds</p>
+                <div id="momentum-container">
+                    <p class="loading">Loading momentum...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shot Analytics Section -->
+        <section id="shots-view" class="view">
+            <h2 class="section-title">Shot Analytics</h2>
+
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <h3 class="card-title">Accuracy</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Fairways Hit</span>
+                        <span class="stat-value" id="detail-fairways">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">GIR %</span>
+                        <span class="stat-value" id="detail-gir">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Scrambling %</span>
+                        <span class="stat-value" id="detail-scrambling">-</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="card-title">Putting</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Avg Putts/Round</span>
+                        <span class="stat-value" id="detail-putts">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Putts per GIR</span>
+                        <span class="stat-value" id="putts-gir">-</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="card-title">Approach Shot Accuracy</h3>
+                    <p class="card-subtitle">Where do your approach shots miss?</p>
+                    <div id="approach-shot-container">
+                        <p class="loading">Loading approach shot data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Putting Performance Detail -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Putting Performance</h3>
+                <p class="card-subtitle">Detailed putting breakdown and efficiency trends</p>
+                <div id="putting-performance-container">
+                    <p class="loading">Loading putting data...</p>
+                </div>
+            </div>
+
+            <!-- Birdie Conversion -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Birdie Conversion</h3>
+                <p class="card-subtitle">How often you convert birdie opportunities (GIRs) into actual birdies</p>
+                <div id="birdie-conversion-container">
+                    <p class="loading">Loading birdie conversion data...</p>
+                </div>
+            </div>
+
+            <!-- Performance vs Scratch -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">Performance vs Scratch</h3>
+                <p class="card-subtitle">Estimated stroke breakdown comparing your performance to a scratch golfer</p>
+                <div id="strokes-gained-container">
+                    <p class="loading">Loading performance data...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Performance Section -->
+        <section id="courses-view" class="view">
+            <h2 class="section-title">Course Performance</h2>
+
+            <!-- Course Learning Curves -->
+            <div class="stat-card">
+                <h3 class="card-title">Course Learning Curves</h3>
+                <p class="card-subtitle">Track your improvement at courses played 3+ times</p>
+                <div id="course-learning-container">
+                    <p class="loading">Loading learning curves...</p>
+                </div>
+            </div>
+
+            <!-- All Course Performance -->
+            <div class="stat-card" style="margin-top: 2rem;">
+                <h3 class="card-title">All Courses</h3>
+                <div id="course-performance-container">
+                    <p class="loading">Loading course data...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
