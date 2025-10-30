@@ -1,12 +1,8 @@
 # Dependencies
 node_modules/
 
-# Environment and credentials
+# Environment and credentials (never commit)
 .env
-
-# Personal golf data (keep private)
-ghin-data.json
-ghin-handicap-history.json
 
 # Build output (gh-pages handles deployment)
 dist/

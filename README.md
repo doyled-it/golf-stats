@@ -51,11 +51,31 @@ npm run serve
 
 ### Deployment
 
-Deploy to GitHub Pages:
+#### Initial Setup
 
-```bash
-npm run deploy
-```
+1. **Create GitHub Repository Secrets:**
+   - Go to your GitHub repo → Settings → Secrets and variables → Actions
+   - Add two secrets:
+     - `GHIN_USERNAME`: Your GHIN username/email
+     - `GHIN_PASSWORD`: Your GHIN password
+
+2. **Deploy manually the first time:**
+   ```bash
+   npm run deploy
+   ```
+
+3. **Enable GitHub Pages:**
+   - Go to repo Settings → Pages
+   - Source should be set to `gh-pages` branch
+
+#### Automatic Updates
+
+The site will automatically update daily at midnight Pacific Time via GitHub Actions. The workflow:
+- Fetches latest data from GHIN
+- Rebuilds the site
+- Deploys to GitHub Pages
+
+You can also trigger a manual update from the Actions tab in GitHub.
 
 ## Project Structure
 

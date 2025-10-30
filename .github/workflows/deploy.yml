@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Run daily at midnight Pacific Time (8:00 UTC)
+  schedule:
+    - cron: '0 8 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+  
+  # Run on push to main
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Create .env file
+        run: |
+          echo "GHIN_USERNAME=${{ secrets.GHIN_USERNAME }}" >> .env
+          echo "GHIN_PASSWORD=${{ secrets.GHIN_PASSWORD }}" >> .env
+      
+      - name: Fetch GHIN data
+        run: npm run fetch-data
+      
+      - name: Build project
+        run: npm run build:skip-fetch
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
