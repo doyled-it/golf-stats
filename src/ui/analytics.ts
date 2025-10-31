@@ -74,7 +74,7 @@ export function createInlineMomentumChart(round: RoundMomentum): string {
   const points = round.holes.map(h => `${xScale(h.holeNumber)},${yScale(h.cumulativeScoreToPar)}`).join(' ');
 
   let svg = `
-    <svg width="${width}" height="${height}" class="momentum-svg-inline">
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="auto" class="momentum-svg-inline" style="max-width: ${width}px;">
       <!-- Zero line -->
       <line x1="${padding}" y1="${yScale(0)}" x2="${width - padding}" y2="${yScale(0)}"
             stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
@@ -156,7 +156,7 @@ function createMomentumChart(round: RoundMomentum): string {
   ).join(' ');
 
   let svg = `
-    <svg width="${width}" height="${height}" class="momentum-svg">
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="auto" class="momentum-svg" style="max-width: ${width}px;">
       <!-- Zero line -->
       <line x1="${padding}" y1="${yScale(0)}" x2="${width - padding}" y2="${yScale(0)}"
             stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
@@ -311,7 +311,7 @@ function createLearningChart(curve: CourseLearningCurve): string {
   ).join(' ');
 
   let svg = `
-    <svg width="${width}" height="${height}" class="learning-svg">
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="auto" class="learning-svg" style="max-width: ${width}px;">
       <!-- Trend line -->
       <path d="${pathData}"
             fill="none"

@@ -58,7 +58,7 @@ export function populateGoalsBurndown(goalsData: GoalsData): void {
 
   // Start SVG
   let svg = `
-    <svg width="${width}" height="${height}" style="background: rgba(255,255,255,0.02); border-radius: 8px;">
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="auto" style="background: rgba(255,255,255,0.02); border-radius: 8px; max-width: ${width}px;">
       <!-- Y-axis grid lines -->
   `;
 
