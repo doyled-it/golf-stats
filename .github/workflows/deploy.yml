@@ -1,13 +1,6 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Run daily at midnight Pacific Time (8:00 UTC)
-  schedule:
-    - cron: '0 8 * * *'
-  
-  # Allow manual trigger
-  workflow_dispatch:
-  
   # Run on push to main
   push:
     branches: [ main ]
@@ -31,15 +24,7 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
-      
-      - name: Create .env file
-        run: |
-          echo "GHIN_USERNAME=${{ secrets.GHIN_USERNAME }}" >> .env
-          echo "GHIN_PASSWORD=${{ secrets.GHIN_PASSWORD }}" >> .env
-      
-      - name: Fetch GHIN data
-        run: npm run fetch-data
-      
+
       - name: Build project
         run: npm run build:skip-fetch
       
