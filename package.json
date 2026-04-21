@@ -11,7 +11,8 @@
     "dev": "tsc --watch",
     "serve": "npx http-server dist -p 8080 -o",
     "predeploy": "npm run build:skip-fetch",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "postinstall": "patch-package"
   },
   "keywords": [
     "golf",
@@ -22,6 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "gh-pages": "^6.3.0",
+    "patch-package": "^8.0.1",
     "typescript": "^5.6.0"
   },
   "dependencies": {

@@ -1,0 +1,102 @@
+diff --git a/node_modules/ghin/dist/index.cjs b/node_modules/ghin/dist/index.cjs
+index fb6bd00..81d7dae 100644
+--- a/node_modules/ghin/dist/index.cjs
++++ b/node_modules/ghin/dist/index.cjs
+@@ -825,19 +825,19 @@ var schemaStatistics = import_zod18.z.object({
+   birdies_or_better_percent: float,
+   bogeys_percent: float,
+   double_bogeys_percent: float,
+-  fairway_hits_percent: float,
++  fairway_hits_percent: floatSafe,
+   gir_percent: float,
+   last_stats_update_date: date,
+   last_stats_update_type: emptyStringToNull,
+   missed_general_approach_shot_accuracy_percent: float,
+   missed_left_approach_shot_accuracy_percent: float,
+-  missed_left_percent: float,
++  missed_left_percent: floatSafe,
+   missed_long_approach_shot_accuracy_percent: float,
+-  missed_long_percent: float,
++  missed_long_percent: floatSafe,
+   missed_right_approach_shot_accuracy_percent: float,
+-  missed_right_percent: float,
++  missed_right_percent: floatSafe,
+   missed_short_approach_shot_accuracy_percent: float,
+-  missed_short_percent: float,
++  missed_short_percent: floatSafe,
+   one_putt_or_better_percent: float,
+   par3s_average: float,
+   par4s_average: float,
+@@ -868,13 +868,14 @@ var scoreTypesMap = {
+ var schemaScoreTypeWithTransform = schemaRawScoreTypes.transform(
+   (value) => scoreTypesMap[value]
+ );
+-var scoreStatuses = ["VALIDATED", "UNDER_REVIEW"];
++var scoreStatuses = ["VALIDATED", "UNDER_REVIEW", "TEMPORARY"];
+ var schemaScoreStatus = import_zod19.z.enum(scoreStatuses);
+-var rawScoreStatuses = ["Validated", "UnderReview"];
++var rawScoreStatuses = ["Validated", "UnderReview", "Temporary"];
+ var schemaRawScoreStatus = import_zod19.z.enum(rawScoreStatuses);
+ var scoreStatusesMap = {
+   Validated: "VALIDATED",
+-  UnderReview: "UNDER_REVIEW"
++  UnderReview: "UNDER_REVIEW",
++  Temporary: "TEMPORARY"
+ };
+ var schemaScoreStatusWithTransform = schemaRawScoreStatus.transform(
+   (value) => scoreStatusesMap[value]
+diff --git a/node_modules/ghin/dist/index.js b/node_modules/ghin/dist/index.js
+index 4a2bea5..abc720e 100644
+--- a/node_modules/ghin/dist/index.js
++++ b/node_modules/ghin/dist/index.js
+@@ -80,6 +80,7 @@ var date = z2.union([z2.date(), z2.string()]).refine((value) => value ? !Number.
+ var emptyString = z2.string().trim();
+ var emptyStringToNull = emptyString.nullable().transform((value) => value || null);
+ var float = z2.coerce.number();
++var floatSafe = z2.preprocess((v) => { if (v === null || v === undefined) return null; if (typeof v === "string") { if (v === "" || v === "NaN" || v.toLowerCase() === "nan") return null; const n = Number(v); return Number.isFinite(n) ? n : null; } if (typeof v === "number") return Number.isFinite(v) ? v : null; return v; }, z2.number().nullable());
+ var gender = z2.enum(["M", "F"]);
+ var handicap = z2.union([float, z2.string(), z2.null()]).refine((value) => {
+   if (typeof value === "number") {
+@@ -799,19 +800,19 @@ var schemaStatistics = z18.object({
+   birdies_or_better_percent: float,
+   bogeys_percent: float,
+   double_bogeys_percent: float,
+-  fairway_hits_percent: float,
++  fairway_hits_percent: floatSafe,
+   gir_percent: float,
+   last_stats_update_date: date,
+   last_stats_update_type: emptyStringToNull,
+   missed_general_approach_shot_accuracy_percent: float,
+   missed_left_approach_shot_accuracy_percent: float,
+-  missed_left_percent: float,
++  missed_left_percent: floatSafe,
+   missed_long_approach_shot_accuracy_percent: float,
+-  missed_long_percent: float,
++  missed_long_percent: floatSafe,
+   missed_right_approach_shot_accuracy_percent: float,
+-  missed_right_percent: float,
++  missed_right_percent: floatSafe,
+   missed_short_approach_shot_accuracy_percent: float,
+-  missed_short_percent: float,
++  missed_short_percent: floatSafe,
+   one_putt_or_better_percent: float,
+   par3s_average: float,
+   par4s_average: float,
+@@ -842,13 +843,14 @@ var scoreTypesMap = {
+ var schemaScoreTypeWithTransform = schemaRawScoreTypes.transform(
+   (value) => scoreTypesMap[value]
+ );
+-var scoreStatuses = ["VALIDATED", "UNDER_REVIEW"];
++var scoreStatuses = ["VALIDATED", "UNDER_REVIEW", "TEMPORARY"];
+ var schemaScoreStatus = z19.enum(scoreStatuses);
+-var rawScoreStatuses = ["Validated", "UnderReview"];
++var rawScoreStatuses = ["Validated", "UnderReview", "Temporary"];
+ var schemaRawScoreStatus = z19.enum(rawScoreStatuses);
+ var scoreStatusesMap = {
+   Validated: "VALIDATED",
+-  UnderReview: "UNDER_REVIEW"
++  UnderReview: "UNDER_REVIEW",
++  Temporary: "TEMPORARY"
+ };
+ var schemaScoreStatusWithTransform = schemaRawScoreStatus.transform(
+   (value) => scoreStatusesMap[value]
